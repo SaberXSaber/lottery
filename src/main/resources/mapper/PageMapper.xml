@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lottery.dao.PageDao">
+
+
+        <sql id="query_where">
+              and   ${sqlCondition}
+        </sql>
+
+        <select id="getPageByPage" parameterType="com.lottery.condition.PageCondition" resultType="com.lottery.pojo.PageEntity">
+                SELECT * FROM(
+                SELECT TOP ${recordEnd} ROW_NUMBER() OVER(ORDER BY PageId ASC) AS ROWID,*  FROM Page
+                WHERE  CurState = 1
+                <if test="sqlCondition != null and sqlCondition != ''">
+                        <include refid="query_where"></include>
+                </if>
+                ) AS TEMP1
+                WHERE ROWID>#{recordStart}
+        </select>
+
+        <select id="getTotal" resultType="java.lang.Integer">
+                select count(*) from Page
+                WHERE  CurState = 1
+                        <if test="sqlCondition != null and sqlCondition != ''">
+                                <include refid="query_where"></include>
+                        </if>
+        </select>
+
+
+
+        <insert id="addPage" parameterType="com.lottery.pojo.PageEntity">
+                INSERT INTO Page ([PageName],[PageGroupName],[PagePath],[CurState],[CreateTime],[UpdateTime]
+                ) VALUES (#{pageName},#{pageGroupName},#{pagePath},1,getdate(),getdate())
+                <selectKey keyProperty="pageId" resultType="int" order="AFTER">
+                        select @@identity
+                </selectKey>
+        </insert>
+
+        <update id="updatePage" parameterType="com.lottery.pojo.PageEntity" statementType="PREPARED">
+                update Page
+                <set>
+                        <if test="pageName != null">PageName = #{pageName},</if>
+                        <if test="pageGroupName != null">PageGroupName = #{pageGroupName},</if>
+                        <if test="pagePath != null">PagePath = #{pagePath},</if>
+                        UpdateTime = getdate()
+                </set>
+                where PageId = #{pageId}
+        </update>
+
+        <update id="deletePage" parameterType="com.lottery.pojo.PageEntity" statementType="PREPARED">
+                update Page set
+                      CurState =0,
+                      UpdateTime = getdate()
+                where PageId = #{pageId}
+        </update>
+
+
+        <select id="pageList" resultType="com.lottery.pojo.PageEntity">
+                SELECT * FROM  Page WHERE CurState=1
+        </select>
+</mapper>

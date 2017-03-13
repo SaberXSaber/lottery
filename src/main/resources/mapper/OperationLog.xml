@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lottery.dao.OperationLogDao">
+
+        <insert id="add" parameterType="com.lottery.pojo.OperationLog">
+                INSERT INTO OperationLog ([UserId],[OperatorType],[Descr],[RequestIp],[Params],[OperatorTime])
+                VALUES (#{userId},#{operatorType},#{descr},#{requestIp},#{Params},getdate())
+                <selectKey keyProperty="id" resultType="int" order="AFTER">
+                        select @@identity
+                </selectKey>
+        </insert>
+
+</mapper>
