@@ -63,7 +63,7 @@
         <li>
           <a href="#">
             <i class="fa fa-home"></i>
-            <span class="nav-label">主页</span>
+            <span class="nav-label">后台用户管理</span>
             <span class="fa arrow"></span>
           </a>
           <ul class="nav nav-second-level">
@@ -79,9 +79,9 @@
             <li>
               <a class="J_menuItem" href="/rolePagelist">权限管理</a>
             </li>
-            <li>
+           <%-- <li>
               <a class="J_menuItem" href="http://localhost:8080/index6">主页示例五</a>
-            </li>
+            </li>--%>
           <%--  <li>
               <a href="index_v5.html" target="_blank">主页示例五</a>
             </li>--%>
