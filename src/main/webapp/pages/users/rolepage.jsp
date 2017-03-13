@@ -53,18 +53,18 @@
                                                <h5>元素</h5>
                                            </div>
                                            <div class="ibox-content">
-                                               <div class="col-md-12">
-                                                   <div class="form-group">
+                                               <form role="form" class="form-horizontal m-t">
+                                                   <div class="form-group draggabledraggable">
                                                        <label class="col-sm-3 control-label">角色：</label>
                                                        <div class="col-sm-9">
                                                            <select class="form-control" name="" id="selectRoleId">
-                                                           <c:forEach items="${roleLists}" var="roleList">
-                                                               <option value=${roleList.roleId}>${roleList.roleName}</option>
-                                                           </c:forEach>
+                                                               <c:forEach items="${roleLists}" var="roleList">
+                                                                   <option value=${roleList.roleId}>${roleList.roleName}</option>
+                                                               </c:forEach>
                                                            </select>
                                                        </div>
                                                    </div>
-                                                   <div class="form-group">
+                                                   <div class="form-group draggable">
                                                        <label class="col-sm-3 control-label">权限：</label>
                                                        <div class="col-sm-9">
                                                            <c:forEach items="${pageLists}" var="pageList">
@@ -73,15 +73,21 @@
                                                            </c:forEach>
                                                        </div>
                                                    </div>
-                                               </div>
 
-                                               <div class="hr-line-dashed"></div>
-                                               <div class="form-group draggable">
-                                                   <div class="modal-footer">
-                                                       <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
-                                                       <button type="button" class="btn btn-primary" onclick="addBatchRight()">保存</button>
+                                                   <div class="form-group draggable">
+                                                       <div class="col-sm-12 col-sm-offset-3">
+                                                           <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                                           <button type="button" class="btn btn-primary" onclick="addBatchRight()">保存</button>
+                                                       </div>
                                                    </div>
-                                               </div>
+                                                  <%-- <div class="form-group draggable">
+                                                       <div class="modal-footer">
+                                                           <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+                                                           <button type="button" class="btn btn-primary" onclick="addBatchRight()">保存</button>
+                                                       </div>
+                                                   </div>--%>
+
+                                               </form>
                                            </div>
                                        </div>
                                    </div>
@@ -246,8 +252,6 @@
                 return str;
             };
 
-
-
             $(window).bind(
                     "resize",
                     function(){
@@ -266,25 +270,15 @@
                 type: "POST",
                // async:false,
                 url: "addbatchright.htm",
-//                contentType: "application/json",//必须有
-               /* data: JSON.stringify({
-                    'roleId': roleId,
-                    'pages': s
-                }),*/
                 data:{'roleId':roleId,'pages':s},
                 success: function (result) {
-//                    dialog.close();
-//                    mmgrid.load();
                     alert(result);
-//                    $("#table_list_1").jqGrid('navGrid','#pager_list_2').t;
+                    document.getElementById("myModal").style.display = 'none';
+                     history.go(0)
                 },
                 error: function(result) {
-                   /* if(result.status==403){
-                        messageDialog("无权限！");
-                    }*/
-//                    dialog.close();
-//                    mmgrid.load();
-
+                    alert(result);
+                    history.go(0)
                 }
             });
         }
