@@ -63,12 +63,12 @@
         <li>
           <a href="#">
             <i class="fa fa-home"></i>
-            <span class="nav-label">后台用户管理</span>
+            <span class="nav-label">系统管理</span>
             <span class="fa arrow"></span>
           </a>
           <ul class="nav nav-second-level">
             <li>
-              <a class="J_menuItem" href="/userlist" data-index="0">用户管理</a>
+              <a class="J_menuItem" href="/userlist" data-index="0">后台账户管理</a>
             </li>
             <li>
               <a class="J_menuItem" href="/rolelist">角色管理</a>
