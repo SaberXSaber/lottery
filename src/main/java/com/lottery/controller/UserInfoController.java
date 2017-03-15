@@ -3,9 +3,8 @@ package com.lottery.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lottery.condition.PageCondition;
-import com.lottery.pojo.UsersEntity;
-import com.lottery.service.RoleService;
-import com.lottery.service.UserService;
+import com.lottery.pojo.UserInfoEntity;
+import com.lottery.service.UserInfoService;
 import com.lottery.utils.ConstantParm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,55 +26,52 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/")
-public class UserController extends BaseController {
+public class UserInfoController extends BaseController {
 
     @Autowired
-    private UserService userService;
+    private UserInfoService userInfoService;
 
 
-    @RequestMapping(value="/userlist",method = RequestMethod.GET)
-    public String userlist(ModelMap model){
-        if(!hasRight()){
+    @RequestMapping(value="/userinfolist",method = RequestMethod.GET)
+    public String userInfolist(ModelMap model){
+       /* if(!hasRight()){
             return "403";
-        }
-        return "users/user";
+        }*/
+        return "userinfo/userinfo";
     }
 
 
-    @RequestMapping(value = "/userdata")
+    @RequestMapping(value = "/userinfodata")
     @ResponseBody
     public Map list(PageCondition pageCondition){
         Map reslut = new HashMap();
-        List<UsersEntity> listUsers =userService.getUserByPage(pageCondition);
-        int recordTotal = userService.getTotal(pageCondition);
+        List<UserInfoEntity> listUserInfos =userInfoService.getUserInfoByPage(pageCondition);
+        int recordTotal = userInfoService.getTotal(pageCondition);
         pageCondition.setRecordTotal(recordTotal);
         reslut.put("total", pageCondition.getTotal());
-        reslut.put("rows", listUsers);
+        reslut.put("rows", listUserInfos);
         return reslut;
     }
 
-    @RequestMapping(value="/useredit")
+    @RequestMapping(value="/userinfoedit")
     @ResponseBody
-    public Map edit( UsersEntity usersEntity,String oper){
+    public String edit( UserInfoEntity usersEntity,String oper){
 
         boolean result= false;
         if(ConstantParm.OPER_ADD.equals(oper)){
-            result=userService.addUser(usersEntity);
+            result=userInfoService.addUserInfo(usersEntity);
             System.out.println("用户添加");
         }else if(ConstantParm.OPER_EDIT.equals(oper)){
-            result=userService.updateUser(usersEntity);
+            result=userInfoService.updateUserInfo(usersEntity);
             System.out.println("用户修改");
         }else if(ConstantParm.OPER_DEL.equals(oper)){
-            result=userService.deleteUser(usersEntity);
+            result=userInfoService.deleteUserInfo(usersEntity);
             System.out.println("用户删除");
-        }else if(ConstantParm.OPER_ABLE.equals(oper)){
-            result=userService.ableUser(usersEntity);
-            System.out.println("启用禁用用户");
-        } else {
+        }else {
             result =true;
         }
 
-        Map<String,Object> res = new JSONObject();
+        JSONObject res = new JSONObject();
         if(result){
             res.put("msg", "操作成功");
             res.put("successs", result);
@@ -86,7 +82,10 @@ public class UserController extends BaseController {
             res.put("successs", result);
             res.put("status", 500);
         }
-        return res;
+        return res.toString();
 
     }
+
+
+
 }

@@ -15,15 +15,16 @@ public class UserMoneyDetailEntity implements Serializable{
 
     private static final long serialVersionUID = 4020688149247445340L;
     int detailId;
-    Date currentdate;
+    String currentdate;
     int userId;
-    int        typeId;//1，收入 2，支出
+    int  typeId;//1，收入 2，支出
     int typeDetailId;//充值，提现，冻结，中奖，
     BigDecimal money;// 收入为正，支出为负
     String remark; //备注信息
     int curState;//当前状态	0，无效 1，有效
-    Date updateTime;
-    Date createTime;
+    String updateTime;
+    String createTime;
+    String loginAccount;
 
     public int getDetailId() {
         return detailId;
@@ -33,11 +34,11 @@ public class UserMoneyDetailEntity implements Serializable{
         this.detailId = detailId;
     }
 
-    public Date getCurrentdate() {
+    public String getCurrentdate() {
         return currentdate;
     }
 
-    public void setCurrentdate(Date currentdate) {
+    public void setCurrentdate(String currentdate) {
         this.currentdate = currentdate;
     }
 
@@ -89,20 +90,28 @@ public class UserMoneyDetailEntity implements Serializable{
         this.curState = curState;
     }
 
-    public Date getUpdateTime() {
+    public String getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public String getLoginAccount() {
+        return loginAccount;
+    }
+
+    public void setLoginAccount(String loginAccount) {
+        this.loginAccount = loginAccount;
     }
 
     @Override

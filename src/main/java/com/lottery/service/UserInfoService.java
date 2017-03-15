@@ -1,26 +1,23 @@
-package com.lottery.dao;
+package com.lottery.service;
 
 import com.lottery.condition.PageCondition;
 import com.lottery.pojo.UserInfoEntity;
-import com.lottery.pojo.UsersEntity;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
  * User: guoshubo
  * Date: 2017/3/3
- * Time: 16:52
+ * Time: 16:51
  * Description：
  */
-public interface UserInfoDao {
+public interface UserInfoService {
     UserInfoEntity getUserInfo();
     List<UserInfoEntity> getUserInfoByPage(PageCondition pageCondition);
-    int addUserInfo(UserInfoEntity userInfosEntity);
-    int updateUserInfo(UserInfoEntity userInfosEntity);
-    int deleteUserInfo(UserInfoEntity userInfosEntity);
-
+    boolean addUserInfo(UserInfoEntity userInfoEntity);
+    boolean updateUserInfo(UserInfoEntity userInfoEntity);
+    boolean deleteUserInfo(UserInfoEntity userInfoEntity);
     int getTotal(PageCondition pageCondition);
 
 }

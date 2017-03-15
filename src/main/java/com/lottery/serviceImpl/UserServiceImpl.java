@@ -46,7 +46,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean deleteUser(UsersEntity usersEntity) {
-        return userDao.deleteUser(usersEntity)>0;
+        usersEntity.setCurState(-1);
+        return userDao.updateState(usersEntity)>0;
+    }
+
+    @Override
+    public boolean ableUser(UsersEntity usersEntity) {
+        if( usersEntity.getCurState()==1){
+            usersEntity.setCurState(0);
+        }else if(usersEntity.getCurState()==0) {
+            usersEntity.setCurState(1);
+        }
+        return userDao.updateState(usersEntity)>0;
     }
 
     @Override

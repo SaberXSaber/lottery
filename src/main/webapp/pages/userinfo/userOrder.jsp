@@ -36,7 +36,7 @@
             <div class="col-sm-12">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        <h5>用户管理</h5>
+                        <h5>投注记录</h5>
                     </div>
                     <div class="ibox-content">
 
@@ -59,91 +59,74 @@
     <script src="js/plugins/jqgrid/jquery.jqGrid.minffe4.js?0820"></script>
     <script src="js/content.min.js?v=1.0.0"></script>
     <script src="js/plugins/jqgrid/json2.js"></script>
+    <script src="js/jDialog/jquery.dialog.js"></script>
 
     <script>
-        function Delete(id,curState) { //单击删除链接的操作
-            $.ajax({
-                type: "POST",
-                 async:true,
-                url: "/useredit.htm",
-                data:{'userId':id,'curState':curState,'oper':"able"},
-                success: function (result) {
-//                    alert(result);
-                    history.go(0)
-                },
-                error: function(result) {
-                    alert(result.msg);
-                    history.go(0)
-                }
-            });
-        }
-
         $(document).ready(function(){
             $.jgrid.defaults.styleUI="Bootstrap";
             $("#table_list_1").jqGrid({
-                url:'/userdata.htm',
+                url:'/userorderdata.htm',
                 datatype:"json",
                 height:450,
                 autowidth:true,
                 shrinkToFit:true,
                 rowNum:10,
                 rowList:[10,20,30],
-                colNames:["用户Id","用户名","登录名","用户角色","状态","创建时间",'操作'],
+                colNames:["订单Id","日期","用户","订单类型","订单金额","开始期号","加倍","追加期数","注数","订单状态","状态","创建时间","修改时间","详情"],
                 colModel:[
-                    {name:"userId",index:"userId",editable:false,width:60,sorttype:"int",search:true},
-                    {name:"userName",index:"userName",editable:true,width:100},
-                    {name:"loginName",index:"loginName",editable:true,width:80},
-//                    {name:"roleName",index:"roleName",editable:true,width:90,edittype:"select",editoptions:{value:gettypes()}},/*dataUrl:"http://localhost:8080/roles.htm"*/
-                    {name:"roleId",index:"roleId",editable:true,width:90,formatter: "select",edittype:"select",editoptions:{value:gettypes()}},
-                    {name:"curState",index:"curState",editable:false,width:80,formatter: "select",editoptions:{value:"1:启用;0:禁用"}},
+                    {name:"orderId",index:"userId",editable:false,width:60,sorttype:"int",search:true},
+                    {name:"currentdate",index:"currentdate",editable:false,width:100,sorttype:"date",formatter:"date",sortable:false},
+                    {name:"loginAccount",index:"loginAccount",editable:true,width:100},
+                    {name:"orderType",index:"orderType",editable:false,width:80,formatter: "select",editoptions:{value:"1:普通订单;2：组合彩"}},
+                    {name:"orderMoney",index:"orderMoney",editable:true,width:100,formatter:"number",formatoptions: {thousandsSeparator:",", defaulValue:"",decimalPlaces:4}},
+                    {name:"beginLotteryDateNum",index:"beginLotteryDateNum",editable:true,width:100},
+                    {name:"doubleNum",index:"doubleNum",editable:true,width:80},
+                    {name:"moreNum",index:"moreNum",editable:true,width:80},
+                    {name:"tatalNum",index:"tatalNum",editable:true,width:80},
+                    {name:"orderState",index:"orderState",editable:false,width:80,formatter: "select",editoptions:{value:"1:待付款;2：已付款;2：已取消"}},
+                    {name:"curState",index:"curState",editable:false,width:80,formatter: "select",editoptions:{value:"1:启用;2：禁用"}},
                     {name:"createTime",index:"createTime",editable:false,width:100,sorttype:"date",formatter:"date",sortable:false},
-                    {name:'Delete',index:'userId',width:80,align:'center',sortable:false}
+                    {name:"updateTime",index:"updateTime",editable:false,width:100,sorttype:"date",formatter:"date",sortable:false},
+
+                   /* {name:'Modify',index:'id', align:'center',sortable:false,width:30}*/
+
+                    {
+                        label: '详情', name: '', index: 'operate', width: 50, align: 'center',
+                        /*formatter: function (cellvalue, options, rowObject) {
+                            return  "<a  onclick='btn_detail(\""+ rowObject.orderId + "\")'>详细</a>";
+
+                        },*/
+                        formatter: function (cellvalue, options, rowObject) {
+                            return "<a href=\"#\" style=\"color:#f60\" onclick=\"Modify(" + rowObject.orderId + ")\">详细</a>" }
+                    },
                 ],
                 pager:"#pager_list_1",
                 viewrecords:true,
-                caption:"用户列表",
-                gridComplete:function(){  //在此事件中循环为每一行添加修改和删除链接
-                    var ids=jQuery("#table_list_1").jqGrid('getDataIDs');
-//                    var sel_id = $('#table_list_1').jqGrid('getGridParam', 'selrow');
-
+                gridComplete:function(){
+                    var ids=$("#table_list_1").jqGrid('getDataIDs');
                     for(var i=0; i<ids.length; i++){
                         var id=ids[i];
-                        var curState = $('#table_list_1').jqGrid('getCell', id, 'curState');
-                        if(curState ==1){
-                            del = "<a href='#'  style='color:#f60' onclick='Delete(" + id +","+curState+ ")' >禁用</a>";
-                        }else{
-                            del = "<a href='#'  style='color:#f60' onclick='Delete(" + id +","+curState+ ")' >启用</a>";
-                        }
-//                        del = "<a href='#'  style='color:#f60' onclick='Delete(" + id +","+curState+ ")' >删除</a>";
-                        jQuery("#table_list_1").jqGrid('setRowData', ids[i], {  Delete: del });
+                        modify ="<a href='#' class='ui-icon ui-icon-pencil hand setPosition' onclick='editGateway("+ "\"" + id + "\""+")'></a>";
+                        $("#table_list_1").jqGrid('setRowData', ids[i], { Modify: modify});
                     }
                 },
+                caption:"投注记录",
                 add:true,
                 edit:true,
                 addtext:"Add",
                 edittext:"Edit",
-                editurl: '/useredit.htm',
+                editurl: '/userorderedit',
                 hidegrid:false});
             $("#table_list_1").setSelection(4,true);
             $("#table_list_1").jqGrid(
                     "navGrid",
                     "#pager_list_1",
-                    {edit:true,add:true,del:true,search:true},
+                    {edit:false,add:false,del:false,search:true},
                     {//EDIT
 //                        height:200,reloadAfterSubmit:true
                         closeOnEscape: true,//Closes the popup on pressing escape key
                         reloadAfterSubmit: true,
                         drag: true,
-                       /* afterSubmit: function (response, postdata) {
-                            if (response.responseText == "") {
-                                $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');//Reloads the grid after edit
-                                return [true, response.responseText]
-                            }
-                            else {
-                                $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid'); //Reloads the grid after edit
-                                return [false, response.responseText]//Captures and displays the response text on th Edit window
-                            }
-                        },*/
                         editData: {
                             userId: function () {
                                 var sel_id = $('#table_list_1').jqGrid('getGridParam', 'selrow');
@@ -185,48 +168,6 @@
 
                     }
             );
-            function gettypes(){
-                var str="";
-                $.ajax({
-                    type:"post",
-                    async:false,
-                    url:"roles.htm",
-                    success:function(data){
-                        if (data != null) {
-                            console.info(data);
-                            var obj=   JSON.parse(data)
-                            for(var i=0; i<obj.length; i++) {
-                                if(i!=obj.length-1){
-                                    str+=obj[i].roleId+":"+obj[i].roleName+";";
-                                }else{
-                                    str+=obj[i].roleId+":"+obj[i].roleName;// 这里是option里面的 value:label
-                                }
-                            }
-                        }
-                    }
-                });
-                return str;
-            }
-
-
-
-            /*jQuery("#table_list_1").jqGrid('navButtonAdd','#pager_list_1',{
-                caption: "",
-                // buttonicon:"ui-icon-print",
-                title: "选择要的列",
-                onClickButton : function (){
-                    jQuery("#table_list_1").jqGrid('columnChooser');
-                }
-
-            }).navSeparatorAdd("#pager_list_1",{sepclass : "ui-separator",sepcontent: ''}).navButtonAdd('#pager_list_1',{
-                caption:"",
-                title:"导出数据",
-                buttonicon:"ui-icon-disk",
-                onClickButton: function(){
-                    jAlert("您没有选择一行，将导出所有数据");
-                },
-                position:"last"
-            });*/
 
 
 
@@ -236,6 +177,23 @@
                         var width=$(".jqGrid_wrapper").width();
                         $("#table_list_1").setGridWidth(width)}
             )});
+        function Modify(id) {
+           /* var KeyValue = GetJqGridRowValue("#table_list_1", "orderId");
+            if (id!=null) {
+                KeyValue=id;
+            }
+            if (IsChecked(KeyValue)) {*/
+                /*var url = "/OrderDetail?orderId=" + id;
+                Dialog(url, "Detail", "车辆详情", 750, 300, function (iframe) {
+                    top.frames[iframe].AcceptClick();
+                });*/
+/*
+            location.replace("/OrderDetail?orderId=" + id);
+*/
+            window.open('/userorderdetial?orderId='+id,'详情','height=710,width=940,resizable=no,location=no');
+//            }
+        }
+
 
         $("#table_list_1").jqGrid('navGrid','#pager_list_2');
 
