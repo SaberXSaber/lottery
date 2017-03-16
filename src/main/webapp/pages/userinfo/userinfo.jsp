@@ -59,8 +59,70 @@
     <script src="js/plugins/jqgrid/jquery.jqGrid.minffe4.js?0820"></script>
     <script src="js/content.min.js?v=1.0.0"></script>
     <script src="js/plugins/jqgrid/json2.js"></script>
+    <script src="js/ajaxfileupload.js"></script>
 
     <script>
+
+        //生成控件，用个hidden来隐藏得到的上传地址，也可以直接获取Img的Src
+        function myelem(value, editOptions) {
+            var span = $("<span>");
+            var hiddenValue = $("<input>", { type: "hidden", val: value, name: "fileName", id: "fileName" });
+            var image = $("<img>", { name: "uploadimage", id: "uploadimage",style:"display:none; width:150px; height:80px" });
+            var el = document.createElement("input");
+            el.type = "file"
+            el.id = "imgFile";
+            el.name = "imgFile";
+            el.onchange = UploadFile;
+            span.append(el).append(hiddenValue ).append(image);
+            return span;
+        }
+
+        function UploadFile(){
+            $.ajaxFileUpload
+            ({
+                url: '/fileUpload',
+                secureuri: false,
+                fileElementId: 'imgFile',
+                dataType: 'json',
+                success: function(data, status) {
+                    var obj=   JSON.parse(data)
+                    console.info(obj);
+                    if (obj.code == 200) {
+                        $("#fileName").val(obj.imgFile);
+                        $("#uploadimage").attr("src", + obj.imgFile);
+                        $("#uploadimage").show();
+                        $("#imgFile").hide();
+                    }else{
+                        alert(obj.msg);
+                    }
+                    /*alert(obj.imgFile);
+                    if (typeof (data.error) != 'undefined') {
+                        if (data.error != '') {
+                            alert(data.error);
+                        } else {
+                            $("#fileName").val(data.msg);
+                            $("#uploadimage").attr("src", + data.msg);
+                            $("#uploadimage").show();
+                            $("#imgFile").hide();
+                        }
+                    }*/
+                },
+                error: function(data, status, e) {
+                    alert(e);
+                }
+            })
+
+            return false;
+        }
+        function myvalue(elem, sg, value) {
+            return $(elem).find("#fileName").val();
+        }
+
+        function alarmFormatter(cellvalue, options, rowdata)
+        {
+                return '<img class="alarmimg" src='+rowdata.logoUrl+' alt="' + cellvalue + '" />';
+        }
+
         $(document).ready(function(){
             $.jgrid.defaults.styleUI="Bootstrap";
             $("#table_list_1").jqGrid({
@@ -77,7 +139,7 @@
                     {name:"nickName",index:"nickName",editable:true,width:100},
                     {name:"loginAccount",index:"loginAccount",editable:true,width:80},
                     {name:"mobilePhone",index:"mobilePhone",editable:true,width:80},
-                    {name:"logoUrl",index:"logoUrl",editable:true,width:80},
+                    {name:"logoUrl",index:"logoUrl",editable:true,width:80,formatter: alarmFormatter/*,edittype: 'custom',editoptions: {custom_element: myelem, custom_value:myvalue}*/},
                     {name:"curState",index:"curState",editable:false,width:80,formatter: "select",editoptions:{value:"1:启用;2：禁用"}},
                     {name:"createTime",index:"createTime",editable:false,width:100,sorttype:"date",formatter:"date",sortable:false},
                     {name:"updateTime",index:"updateTime",editable:false,width:100,sorttype:"date",formatter:"date",sortable:false}],
@@ -94,7 +156,7 @@
             $("#table_list_1").jqGrid(
                     "navGrid",
                     "#pager_list_1",
-                    {edit:false,add:false,del:false,search:true},
+                    {edit:true,add:false,del:false,search:true},
                     {//EDIT
 //                        height:200,reloadAfterSubmit:true
                         closeOnEscape: true,//Closes the popup on pressing escape key
@@ -179,6 +241,8 @@
             )});
 
         $("#table_list_1").jqGrid('navGrid','#pager_list_2');
+
+
 
     </script>
     <script type="text/javascript" src="js/stats.js" charset="UTF-8"></script>
