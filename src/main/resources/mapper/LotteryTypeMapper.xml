@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lottery.dao.LotteryTypeDao">
+    <sql id="query_where">
+        and   ${sqlCondition}
+    </sql>
+
+    <select id="getListByPage" parameterType="com.lottery.condition.PageCondition"
+            resultType="com.lottery.pojo.LotteryTypeEntity">
+        SELECT * FROM(
+        SELECT TOP ${recordEnd} ROW_NUMBER() OVER(ORDER BY t.${sidx} ${sord}) AS ROWID,t.* FROM LotteryType t
+        where 1=1
+        <if test="sqlCondition != null and sqlCondition != ''">
+            <include refid="query_where"></include>
+        </if>
+        ) AS TEMP1
+        WHERE ROWID>#{recordStart}
+    </select>
+
+    <insert id="addLy" parameterType="com.lottery.pojo.LotteryTypeEntity">
+        INSERT INTO [dbo].[LotteryType]
+        ([SeqNum]
+        ,[TypeName]
+        ,[Tips]
+        ,[ParentId]
+        ,[ParentName]
+        ,[LogoUrl]
+        ,[Price]
+        ,[CurState]
+        ,[UpdateTime]
+        ,[CreateTime])
+        VALUES
+        (#{SeqNum}
+        ,#{TypeName}
+        ,#{Tips}
+        ,#{ParentId}
+        ,#{ParentName}
+        ,#{LogoUrl}
+        ,#{Price}
+        ,0
+        ,getdate()
+        ,getdate())
+    </insert>
+
+
+    <insert id="editLy" parameterType="com.lottery.pojo.LotteryTypeEntity">
+        UPDATE [dbo].[LotteryType]
+        SET [SeqNum] = #{SeqNum}
+        ,[TypeName] = #{TypeName}
+        ,[Tips] = #{Tips}
+        ,[ParentId] = #{ParentId}
+        ,[ParentName] = #{ParentName}
+        ,[LogoUrl] = #{LogoUrl}
+        ,[Price] = #{Price}
+        ,[CurState] = #{CurState}
+        ,[UpdateTime] = getdate()
+        WHERE TypeId = #{TypeId}
+    </insert>
+
+    <select id="getTotal" resultType="java.lang.Integer">
+        select count(1) from LotteryType t
+        where 1=1
+        <if test="sqlCondition != null and sqlCondition != ''">
+            <include refid="query_where"></include>
+        </if>
+    </select>
+</mapper>

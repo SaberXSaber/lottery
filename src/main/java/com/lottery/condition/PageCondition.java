@@ -19,6 +19,16 @@ public class PageCondition {
     private int total = -1; //页码记录
 
     private String sord; //排序
+    private String sidx;
+
+    public String getSidx() {
+        return sidx;
+    }
+
+    public void setSidx(String sidx) {
+        this.sidx = sidx;
+    }
+
     private String searchField;//查询字段
     private String searchString;//查询值
     private String searchOper;//查询条件
