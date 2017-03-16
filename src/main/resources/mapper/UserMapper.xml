@@ -13,10 +13,11 @@
                 SELECT * FROM(
                 SELECT TOP ${recordEnd} ROW_NUMBER() OVER(ORDER BY u.UserId ASC) AS ROWID,u.*,r.RoleName  FROM Users u
                 LEFT JOIN Role r ON u.RoleId = r.RoleId
-                WHERE  r.CurState = 1
+                <where>
                 <if test="sqlCondition != null and sqlCondition != ''">
                         <include refid="query_where"></include>
                 </if>
+                </where>
                 ) AS TEMP1
                 WHERE ROWID>#{recordStart}
         </select>
@@ -24,10 +25,12 @@
         <select id="getTotal" resultType="java.lang.Integer">
                 select count(1) from Users u
                 LEFT JOIN Role r ON u.RoleId = r.RoleId
-                WHERE  r.CurState = 1
-                        <if test="sqlCondition != null and sqlCondition != ''">
+                <where>
+                <if test="sqlCondition != null and sqlCondition != ''">
                                 <include refid="query_where"></include>
                         </if>
+                </where>
+
         </select>
 
         <select id="getUserByNamepwd" parameterType="java.util.Map" resultType="com.lottery.pojo.UsersEntity">
@@ -55,9 +58,9 @@
                 where UserId = #{userId}
         </update>
 
-        <update id="deleteUser" parameterType="com.lottery.pojo.UsersEntity" statementType="PREPARED">
+        <update id="updateState" parameterType="com.lottery.pojo.UsersEntity" statementType="PREPARED">
                 update Users set
-                      CurState =0,
+                      CurState =#{curState},
                       UpdateTime = getdate()
                 where UserId = #{userId}
         </update>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lottery.dao.UserOrderDao">
+
+
+        <sql id="query_where">
+              and   ${sqlCondition}
+        </sql>
+
+        <select id="getByPage" parameterType="com.lottery.condition.PageCondition" resultType="com.lottery.pojo.UserOrderEntity">
+                SELECT * FROM(
+                SELECT TOP ${recordEnd} ROW_NUMBER() OVER(ORDER BY uo.OrderId ASC) AS ROWID,uo.* ,u.LoginAccount FROM UserOrder uo
+                LEFT JOIN  UserInfo u ON  uo.UserId =u.UserId
+                WHERE  uo.CurState = 1 AND u.CurState = 1
+                <if test="sqlCondition != null and sqlCondition != ''">
+                        <include refid="query_where"></include>
+                </if>
+                ) AS TEMP1
+                WHERE ROWID>#{recordStart}
+        </select>
+
+        <select id="getTotal" resultType="java.lang.Integer">
+                select count(*) from UserOrder uo
+                LEFT JOIN  UserInfo u ON  uo.UserId =u.UserId
+                WHERE  uo.CurState = 1 AND u.CurState = 1
+                        <if test="sqlCondition != null and sqlCondition != ''">
+                                <include refid="query_where"></include>
+                        </if>
+        </select>
+
+
+
+        <!--<insert id="add" parameterType="com.lottery.pojo.UserOrderEntity">
+                INSERT INTO UserMoneyDetail ([MobilePhone],[NickName],[LoginAccount],[LoginPwd],[LogoUrl],[CurState],[CreateTime],[UpdateTime]
+                ) VALUES (#{mobilePhone},#{nickName},#{loginAccount},#{loginPwd},#{logoUrl},1,getdate(),getdate())
+                <selectKey keyProperty="userId" resultType="int" order="AFTER">
+                        select @@identity
+                </selectKey>
+        </insert>
+
+        <update id="edit" parameterType="com.lottery.pojo.UserOrderEntity" statementType="PREPARED">
+                update UserMoneyDetail
+                <set>
+                        &lt;!&ndash;<if test="mobilePhone != null">MobilePhone = #{mobilePhone},</if>
+                        <if test="nickName != null">NickName = #{nickName},</if>
+                        <if test="loginAccount != null">LoginAccount = #{loginAccount},</if>
+                        <if test="loginPwd != null">LoginPwd = #{loginPwd},</if>
+                        <if test="logoUrl != null">LogoUrl = #{logoUrl},</if>&ndash;&gt;
+                        UpdateTime = getdate()
+                </set>
+                where DetailId = #{detailId}
+        </update>-->
+
+        <update id="del" parameterType="com.lottery.pojo.UserOrderEntity" statementType="PREPARED">
+                update UserOrder set
+                      CurState =0,
+                      UpdateTime = getdate()
+                where OrderId = #{VALUE }
+        </update>
+
+        <select id="getUserOrderDetail" parameterType="java.lang.Integer" resultType="com.lottery.pojo.UserOrderDetailEntity">
+                SELECT u.*,l.TypeName as LotteryTypeName  FROM  UserOrderDetail u
+                 LEFT JOIN LotteryType l ON  u.LotteryTypeId = l.TypeId
+                 WHERE OrderId =#{VALUE }
+        </select>
+</mapper>

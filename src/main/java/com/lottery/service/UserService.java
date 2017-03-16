@@ -18,6 +18,7 @@ public interface UserService {
     boolean addUser(UsersEntity usersEntity);
     boolean updateUser(UsersEntity usersEntity);
     boolean deleteUser(UsersEntity usersEntity);
+    boolean ableUser(UsersEntity usersEntity);
     int getTotal(PageCondition pageCondition);
 
     UsersEntity getUserByNamepwd(String userName,String password);

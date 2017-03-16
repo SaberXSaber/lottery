@@ -11,6 +11,7 @@ public class ConstantParm {
     public static String OPER_ADD="add";
     public static String OPER_EDIT="edit";
     public static String OPER_DEL="del";
+    public static String OPER_ABLE="able"; //启用禁用
 
     public static String SEESION_USER="user";
 }

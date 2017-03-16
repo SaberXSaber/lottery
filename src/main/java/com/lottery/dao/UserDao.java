@@ -18,7 +18,7 @@ public interface UserDao {
     List<UsersEntity> getUserByPage(PageCondition pageCondition);
     int addUser(UsersEntity usersEntity);
     int updateUser(UsersEntity usersEntity);
-    int deleteUser(UsersEntity usersEntity);
+    int updateState(UsersEntity usersEntity);
 
     int getTotal(PageCondition pageCondition);
 

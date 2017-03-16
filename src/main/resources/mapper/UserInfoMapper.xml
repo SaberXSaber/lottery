@@ -9,7 +9,7 @@
               and   ${sqlCondition}
         </sql>
 
-        <select id="getUserByPage" parameterType="com.lottery.condition.PageCondition" resultType="com.lottery.pojo.UserInfoEntity">
+        <select id="getUserInfoByPage" parameterType="com.lottery.condition.PageCondition" resultType="com.lottery.pojo.UserInfoEntity">
                 SELECT * FROM(
                 SELECT TOP ${recordEnd} ROW_NUMBER() OVER(ORDER BY UserId ASC) AS ROWID,*  FROM UserInfo
                 WHERE  CurState = 1
@@ -28,12 +28,9 @@
                         </if>
         </select>
 
-        <select id="getUserByNamepwd" parameterType="java.util.Map" resultType="com.lottery.pojo.UserInfoEntity">
-                select top 1 * from UserInfo WHERE NickName=#{nickName} AND LoginPwd =#{loginPwd} AND CurState=1
-        </select>
 
 
-        <insert id="addUser" parameterType="com.lottery.pojo.UserInfoEntity">
+        <insert id="addUserInfo" parameterType="com.lottery.pojo.UserInfoEntity">
                 INSERT INTO UserInfo ([MobilePhone],[NickName],[LoginAccount],[LoginPwd],[LogoUrl],[CurState],[CreateTime],[UpdateTime]
                 ) VALUES (#{mobilePhone},#{nickName},#{loginAccount},#{loginPwd},#{logoUrl},1,getdate(),getdate())
                 <selectKey keyProperty="userId" resultType="int" order="AFTER">
@@ -41,7 +38,7 @@
                 </selectKey>
         </insert>
 
-        <update id="updateUser" parameterType="com.lottery.pojo.UserInfoEntity" statementType="PREPARED">
+        <update id="updateUserInfo" parameterType="com.lottery.pojo.UserInfoEntity" statementType="PREPARED">
                 update UserInfo
                 <set>
                         <if test="mobilePhone != null">MobilePhone = #{mobilePhone},</if>
@@ -54,7 +51,7 @@
                 where UserId = #{userId}
         </update>
 
-        <update id="deleteUser" parameterType="com.lottery.pojo.UserInfoEntity" statementType="PREPARED">
+        <update id="deleteUserInfo" parameterType="com.lottery.pojo.UserInfoEntity" statementType="PREPARED">
                 update UserInfo set
                       CurState =0,
                       UpdateTime = getdate()

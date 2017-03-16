@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lottery.dao.UserMoneyDetailDao">
+
+
+        <sql id="query_where">
+              and   ${sqlCondition}
+        </sql>
+
+        <select id="getByPage" parameterType="com.lottery.condition.PageCondition" resultType="com.lottery.pojo.UserMoneyDetailEntity">
+                SELECT * FROM(
+                SELECT TOP ${recordEnd} ROW_NUMBER() OVER(ORDER BY um.DetailId ASC) AS ROWID,um.* ,u.LoginAccount FROM UserMoneyDetail um
+                LEFT JOIN  UserInfo u ON  um.UserId =u.UserId
+                WHERE  um.CurState = 1 AND u.CurState = 1
+                <if test="sqlCondition != null and sqlCondition != ''">
+                        <include refid="query_where"></include>
+                </if>
+                ) AS TEMP1
+                WHERE ROWID>#{recordStart}
+        </select>
+
+        <select id="getTotal" resultType="java.lang.Integer">
+                select count(*) from UserMoneyDetail um
+                LEFT JOIN  UserInfo u ON  um.UserId =u.UserId
+                WHERE  um.CurState = 1 AND u.CurState = 1
+                        <if test="sqlCondition != null and sqlCondition != ''">
+                                <include refid="query_where"></include>
+                        </if>
+        </select>
+
+
+
+        <insert id="add" parameterType="com.lottery.pojo.UserMoneyDetailEntity">
+                INSERT INTO UserMoneyDetail ([MobilePhone],[NickName],[LoginAccount],[LoginPwd],[LogoUrl],[CurState],[CreateTime],[UpdateTime]
+                ) VALUES (#{mobilePhone},#{nickName},#{loginAccount},#{loginPwd},#{logoUrl},1,getdate(),getdate())
+                <selectKey keyProperty="userId" resultType="int" order="AFTER">
+                        select @@identity
+                </selectKey>
+        </insert>
+
+        <update id="edit" parameterType="com.lottery.pojo.UserMoneyDetailEntity" statementType="PREPARED">
+                update UserMoneyDetail
+                <set>
+                        UpdateTime = getdate()
+                </set>
+                where DetailId = #{detailId}
+        </update>
+
+        <update id="del" parameterType="com.lottery.pojo.UserMoneyDetailEntity" statementType="PREPARED">
+                update UserMoneyDetail set
+                      CurState =0,
+                      UpdateTime = getdate()
+                where DetailId = #{VALUE }
+        </update>
+</mapper>

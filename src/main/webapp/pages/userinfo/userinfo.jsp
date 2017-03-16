@@ -59,76 +59,104 @@
     <script src="js/plugins/jqgrid/jquery.jqGrid.minffe4.js?0820"></script>
     <script src="js/content.min.js?v=1.0.0"></script>
     <script src="js/plugins/jqgrid/json2.js"></script>
+    <script src="js/ajaxfileupload.js"></script>
 
     <script>
-        function Delete(id,curState) { //单击删除链接的操作
-            $.ajax({
-                type: "POST",
-                 async:true,
-                url: "/useredit.htm",
-                data:{'userId':id,'curState':curState,'oper':"able"},
-                success: function (result) {
-//                    alert(result);
-                    history.go(0)
+
+        //生成控件，用个hidden来隐藏得到的上传地址，也可以直接获取Img的Src
+        function myelem(value, editOptions) {
+            var span = $("<span>");
+            var hiddenValue = $("<input>", { type: "hidden", val: value, name: "fileName", id: "fileName" });
+            var image = $("<img>", { name: "uploadimage", id: "uploadimage",style:"display:none; width:150px; height:80px" });
+            var el = document.createElement("input");
+            el.type = "file"
+            el.id = "imgFile";
+            el.name = "imgFile";
+            el.onchange = UploadFile;
+            span.append(el).append(hiddenValue ).append(image);
+            return span;
+        }
+
+        function UploadFile(){
+            $.ajaxFileUpload
+            ({
+                url: '/fileUpload',
+                secureuri: false,
+                fileElementId: 'imgFile',
+                dataType: 'json',
+                success: function(data, status) {
+                    var obj=   JSON.parse(data)
+                    console.info(obj);
+                    if (obj.code == 200) {
+                        $("#fileName").val(obj.imgFile);
+                        $("#uploadimage").attr("src", + obj.imgFile);
+                        $("#uploadimage").show();
+                        $("#imgFile").hide();
+                    }else{
+                        alert(obj.msg);
+                    }
+                    /*alert(obj.imgFile);
+                    if (typeof (data.error) != 'undefined') {
+                        if (data.error != '') {
+                            alert(data.error);
+                        } else {
+                            $("#fileName").val(data.msg);
+                            $("#uploadimage").attr("src", + data.msg);
+                            $("#uploadimage").show();
+                            $("#imgFile").hide();
+                        }
+                    }*/
                 },
-                error: function(result) {
-                    alert(result.msg);
-                    history.go(0)
+                error: function(data, status, e) {
+                    alert(e);
                 }
-            });
+            })
+
+            return false;
+        }
+        function myvalue(elem, sg, value) {
+            return $(elem).find("#fileName").val();
+        }
+
+        function alarmFormatter(cellvalue, options, rowdata)
+        {
+                return '<img class="alarmimg" src='+rowdata.logoUrl+' alt="' + cellvalue + '" />';
         }
 
         $(document).ready(function(){
             $.jgrid.defaults.styleUI="Bootstrap";
             $("#table_list_1").jqGrid({
-                url:'/userdata.htm',
+                url:'/userinfodata.htm',
                 datatype:"json",
                 height:450,
                 autowidth:true,
                 shrinkToFit:true,
                 rowNum:10,
                 rowList:[10,20,30],
-                colNames:["用户Id","用户名","登录名","用户角色","状态","创建时间",'操作'],
+                colNames:["用户Id","用户昵称","登录名","电话","头像","状态","创建时间","修改时间"],
                 colModel:[
                     {name:"userId",index:"userId",editable:false,width:60,sorttype:"int",search:true},
-                    {name:"userName",index:"userName",editable:true,width:100},
-                    {name:"loginName",index:"loginName",editable:true,width:80},
-//                    {name:"roleName",index:"roleName",editable:true,width:90,edittype:"select",editoptions:{value:gettypes()}},/*dataUrl:"http://localhost:8080/roles.htm"*/
-                    {name:"roleId",index:"roleId",editable:true,width:90,formatter: "select",edittype:"select",editoptions:{value:gettypes()}},
-                    {name:"curState",index:"curState",editable:false,width:80,formatter: "select",editoptions:{value:"1:启用;0:禁用"}},
+                    {name:"nickName",index:"nickName",editable:true,width:100},
+                    {name:"loginAccount",index:"loginAccount",editable:true,width:80},
+                    {name:"mobilePhone",index:"mobilePhone",editable:true,width:80},
+                    {name:"logoUrl",index:"logoUrl",editable:true,width:80,formatter: alarmFormatter/*,edittype: 'custom',editoptions: {custom_element: myelem, custom_value:myvalue}*/},
+                    {name:"curState",index:"curState",editable:false,width:80,formatter: "select",editoptions:{value:"1:启用;2：禁用"}},
                     {name:"createTime",index:"createTime",editable:false,width:100,sorttype:"date",formatter:"date",sortable:false},
-                    {name:'Delete',index:'userId',width:80,align:'center',sortable:false}
-                ],
+                    {name:"updateTime",index:"updateTime",editable:false,width:100,sorttype:"date",formatter:"date",sortable:false}],
                 pager:"#pager_list_1",
                 viewrecords:true,
                 caption:"用户列表",
-                gridComplete:function(){  //在此事件中循环为每一行添加修改和删除链接
-                    var ids=jQuery("#table_list_1").jqGrid('getDataIDs');
-//                    var sel_id = $('#table_list_1').jqGrid('getGridParam', 'selrow');
-
-                    for(var i=0; i<ids.length; i++){
-                        var id=ids[i];
-                        var curState = $('#table_list_1').jqGrid('getCell', id, 'curState');
-                        if(curState ==1){
-                            del = "<a href='#'  style='color:#f60' onclick='Delete(" + id +","+curState+ ")' >禁用</a>";
-                        }else{
-                            del = "<a href='#'  style='color:#f60' onclick='Delete(" + id +","+curState+ ")' >启用</a>";
-                        }
-//                        del = "<a href='#'  style='color:#f60' onclick='Delete(" + id +","+curState+ ")' >删除</a>";
-                        jQuery("#table_list_1").jqGrid('setRowData', ids[i], {  Delete: del });
-                    }
-                },
                 add:true,
                 edit:true,
                 addtext:"Add",
                 edittext:"Edit",
-                editurl: '/useredit.htm',
+                editurl: '/userinfoedit.htm',
                 hidegrid:false});
             $("#table_list_1").setSelection(4,true);
             $("#table_list_1").jqGrid(
                     "navGrid",
                     "#pager_list_1",
-                    {edit:true,add:true,del:true,search:true},
+                    {edit:true,add:false,del:false,search:true},
                     {//EDIT
 //                        height:200,reloadAfterSubmit:true
                         closeOnEscape: true,//Closes the popup on pressing escape key
@@ -185,29 +213,6 @@
 
                     }
             );
-            function gettypes(){
-                var str="";
-                $.ajax({
-                    type:"post",
-                    async:false,
-                    url:"roles.htm",
-                    success:function(data){
-                        if (data != null) {
-                            console.info(data);
-                            var obj=   JSON.parse(data)
-                            for(var i=0; i<obj.length; i++) {
-                                if(i!=obj.length-1){
-                                    str+=obj[i].roleId+":"+obj[i].roleName+";";
-                                }else{
-                                    str+=obj[i].roleId+":"+obj[i].roleName;// 这里是option里面的 value:label
-                                }
-                            }
-                        }
-                    }
-                });
-                return str;
-            }
-
 
 
             /*jQuery("#table_list_1").jqGrid('navButtonAdd','#pager_list_1',{
@@ -228,8 +233,6 @@
                 position:"last"
             });*/
 
-
-
             $(window).bind(
                     "resize",
                     function(){
@@ -238,6 +241,8 @@
             )});
 
         $("#table_list_1").jqGrid('navGrid','#pager_list_2');
+
+
 
     </script>
     <script type="text/javascript" src="js/stats.js" charset="UTF-8"></script>

@@ -14,7 +14,7 @@ import java.util.Date;
 public class UserOrderEntity implements Serializable{
     private static final long serialVersionUID = -5755369553039044225L;
     int orderId;
-    Date currentdate;//
+    String currentdate;//
     int  userId;
     int orderType;//订单类型 1，普通订单 2，组合彩
     BigDecimal orderMoney; //订单金额
@@ -25,8 +25,9 @@ public class UserOrderEntity implements Serializable{
     int tatalNum;//注数
     int orderState;//订单状态	1，待付款 2，已付款 3,已取消
     int curState;//当前状态	0，无效 1，有效
-    Date updateTime;
-    Date createTime;
+    String updateTime;
+    String createTime;
+    String loginAccount;
 
     public int getOrderId() {
         return orderId;
@@ -36,11 +37,11 @@ public class UserOrderEntity implements Serializable{
         this.orderId = orderId;
     }
 
-    public Date getCurrentdate() {
+    public String getCurrentdate() {
         return currentdate;
     }
 
-    public void setCurrentdate(Date currentdate) {
+    public void setCurrentdate(String currentdate) {
         this.currentdate = currentdate;
     }
 
@@ -116,20 +117,28 @@ public class UserOrderEntity implements Serializable{
         this.curState = curState;
     }
 
-    public Date getUpdateTime() {
+    public String getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public String getLoginAccount() {
+        return loginAccount;
+    }
+
+    public void setLoginAccount(String loginAccount) {
+        this.loginAccount = loginAccount;
     }
 
     @Override

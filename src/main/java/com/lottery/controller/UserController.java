@@ -56,7 +56,7 @@ public class UserController extends BaseController {
 
     @RequestMapping(value="/useredit")
     @ResponseBody
-    public String edit( UsersEntity usersEntity,String oper){
+    public Map edit( UsersEntity usersEntity,String oper){
 
         boolean result= false;
         if(ConstantParm.OPER_ADD.equals(oper)){
@@ -68,11 +68,14 @@ public class UserController extends BaseController {
         }else if(ConstantParm.OPER_DEL.equals(oper)){
             result=userService.deleteUser(usersEntity);
             System.out.println("用户删除");
-        }else {
+        }else if(ConstantParm.OPER_ABLE.equals(oper)){
+            result=userService.ableUser(usersEntity);
+            System.out.println("启用禁用用户");
+        } else {
             result =true;
         }
 
-        JSONObject res = new JSONObject();
+        Map<String,Object> res = new JSONObject();
         if(result){
             res.put("msg", "操作成功");
             res.put("successs", result);
@@ -83,7 +86,7 @@ public class UserController extends BaseController {
             res.put("successs", result);
             res.put("status", 500);
         }
-        return res.toString();
+        return res;
 
     }
 }

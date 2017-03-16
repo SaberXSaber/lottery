@@ -14,20 +14,21 @@ import java.util.Date;
 public class UserOrderDetailEntity implements Serializable{
 
     private static final long serialVersionUID = 248816755232657484L;
-    int orderDetailId;
-    Date currentdate;//
-    int  userId;
-    int orderId;
-    int  lotteryTypeId;//订单金额
-    int detailType;//选择类型 1，人工  2，机选
-    String lotteryDateNum; //彩票期号
-    String lotteryString; //投注号码
-    BigDecimal costMoney; //花费
-    int orderDetailState;//彩票状态 0,未付款，1,待开奖，2,已中奖，3,未中奖
-    int orderState;//订单状态	1，待付款 2，已付款 3,已取消
-    int curState;//当前状态	0，无效 1，有效
-    Date updateTime;
-    Date createTime;
+    private int orderDetailId;
+    private String currentdate;//
+    private int  userId;
+    private int orderId;
+    private int  lotteryTypeId;
+    private int detailType;//选择类型 1，人工  2，机选
+    private String lotteryDateNum; //彩票期号
+    private String lotteryString; //投注号码
+    private BigDecimal costMoney; //花费
+    private int orderDetailState;//彩票状态 0,未付款，1,待开奖，2,已中奖，3,未中奖
+    private int orderState;//订单状态	1，待付款 2，已付款 3,已取消
+    private int curState;//当前状态	0，无效 1，有效
+    private String updateTime;
+    private String createTime;
+    String lotteryTypeName;
 
     public int getOrderDetailId() {
         return orderDetailId;
@@ -37,11 +38,11 @@ public class UserOrderDetailEntity implements Serializable{
         this.orderDetailId = orderDetailId;
     }
 
-    public Date getCurrentdate() {
+    public String getCurrentdate() {
         return currentdate;
     }
 
-    public void setCurrentdate(Date currentdate) {
+    public void setCurrentdate(String currentdate) {
         this.currentdate = currentdate;
     }
 
@@ -125,20 +126,28 @@ public class UserOrderDetailEntity implements Serializable{
         this.curState = curState;
     }
 
-    public Date getUpdateTime() {
+    public String getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public String getLotteryTypeName() {
+        return lotteryTypeName;
+    }
+
+    public void setLotteryTypeName(String lotteryTypeName) {
+        this.lotteryTypeName = lotteryTypeName;
     }
 
     @Override
