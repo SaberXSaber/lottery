@@ -39,6 +39,7 @@ public class IndexController {
         if (user != null){
             httpSession.setAttribute(ConstantParm.SEESION_USER, user);
             httpSession.setMaxInactiveInterval(30 * 60);
+            model.addAttribute("username",username);
             return "/index";
         }else {
             model.addAttribute("msg", "用户名和密码错误");

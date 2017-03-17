@@ -37,7 +37,7 @@
             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
                              <%--  <span class="block m-t-xs"><strong class="font-bold">Beaut-zihan</strong></span>--%>
-                                <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
+                                <span class="text-muted text-xs block">${username}<b class="caret"></b></span>
                                 </span>
             </a>
             <%--<ul class="dropdown-menu animated fadeInRight m-t-xs">
