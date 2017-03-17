@@ -4,18 +4,39 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lottery.dao.DateReportDao">
 
+    <sql id="query_time_where">
+        ${searchTime}
+    </sql>
+
     <sql id="query_where">
         and   ${sqlCondition}
     </sql>
+
     <select id="getByPage" parameterType="com.lottery.condition.PageCondition" resultType="com.lottery.pojo.DateReportEntity">
         SELECT * FROM (
         select  TOP ${recordEnd}  ROW_NUMBER() OVER(ORDER BY  isnull(isnull(t.CreateTime, t1.CreateTime),t2.CreateTime) ASC) AS ROWID,
-        isnull(t.regUserCount,0) as regUserCount , isnull(t1.unbetUserCount,0)  as unbetUserCount, isnull(t1.unbetOrderCount,0) as unbetOrderCount, isnull(t2.betUserCount,0) as betUserCount, isnull(t2.betOrderCount,0) as betOrderCount ,isnull(isnull(t.CreateTime, t1.CreateTime),t2.CreateTime) as dateDay  from
-        (SELECT COUNT(distinct  UserId) as regUserCount, CONVERT(varchar(100), CreateTime, 23) as CreateTime   FROM  UserInfo      GROUP by CONVERT(varchar(100), CreateTime, 23)) as t  FULL OUTER JOIN
-        (SELECT COUNT(distinct  UserId) as unbetUserCount , COUNT(distinct  OrderId) as unbetOrderCount, CONVERT(varchar(100), CreateTime, 23) as CreateTime from    UserOrder  where OrderState = 1 GROUP by CONVERT(varchar(100), CreateTime, 23)) as t1  on t.CreateTime=t1.CreateTime  FULL OUTER JOIN
-        (SELECT COUNT(distinct  UserId) as betUserCount , COUNT(distinct  OrderId) as betOrderCount , CONVERT(varchar(100), CreateTime, 23) as CreateTime from    UserOrder  where OrderState = 2 GROUP by CONVERT(varchar(100), CreateTime, 23)) as t2  on t1.CreateTime=t2.CreateTime
+        isnull(t.regUserCount,0) as regUserCount , isnull(t1.unbetUserCount,0)  as unbetUserCount, isnull(t1.unbetOrderCount,0) as unbetOrderCount, isnull(t2.betUserCount,0) as betUserCount, isnull(t2.betOrderCount,0) as betOrderCount ,isnull(isnull(t.CreateTime, t1.CreateTime),t2.CreateTime) as CreateTime  from
+        (SELECT COUNT(distinct  UserId) as regUserCount, CONVERT(varchar(100), CreateTime, 23) as CreateTime   FROM  UserInfo
         <where>
-            <if test="sqlCondition != null and sqlCondition != ''">
+            <if test="searchTime != null and searchTime != ''">
+                and  CreateTime <include refid="query_time_where"></include>
+            </if>
+        </where>
+        GROUP by CONVERT(varchar(100), CreateTime, 23)) as t  FULL OUTER JOIN
+        (SELECT COUNT(distinct  UserId) as unbetUserCount , COUNT(distinct  OrderId) as unbetOrderCount, CONVERT(varchar(100), CreateTime, 23) as CreateTime from    UserOrder
+        where OrderState = 1
+        <if test="searchTime != null and searchTime != ''">
+             and  CreateTime <include refid="query_time_where"></include>
+        </if>
+        GROUP by CONVERT(varchar(100), CreateTime, 23)) as t1  on t.CreateTime=t1.CreateTime  FULL OUTER JOIN
+        (SELECT COUNT(distinct  UserId) as betUserCount , COUNT(distinct  OrderId) as betOrderCount , CONVERT(varchar(100), CreateTime, 23) as CreateTime from    UserOrder
+        where OrderState = 2
+        <if test="searchTime != null and searchTime != ''">
+            and  CreateTime <include refid="query_time_where"></include>
+        </if>
+        GROUP by CONVERT(varchar(100), CreateTime, 23)) as t2  on t1.CreateTime=t2.CreateTime
+        <where>
+            <if test="sqlCondition != null and sqlCondition != '' and  searchTime == null">
                 <include refid="query_where"></include>
             </if>
         </where>
@@ -26,14 +47,29 @@
     <select id="getTotal" parameterType="com.lottery.condition.PageCondition" resultType="java.lang.Integer">
 
         select count(*)  from
-        (SELECT COUNT(distinct  UserId) as regUserCount, CONVERT(varchar(100), CreateTime, 23) as CreateTime   FROM  UserInfo      GROUP by CONVERT(varchar(100), CreateTime, 23)) as t  FULL OUTER JOIN
-        (SELECT COUNT(distinct  UserId) as unbetUserCount , COUNT(distinct  OrderId) as unbetOrderCount, CONVERT(varchar(100), CreateTime, 23) as CreateTime from    UserOrder  where OrderState = 1 GROUP by CONVERT(varchar(100), CreateTime, 23)) as t1  on t.CreateTime=t1.CreateTime  FULL OUTER JOIN
-        (SELECT COUNT(distinct  UserId) as betUserCount , COUNT(distinct  OrderId) as betOrderCount , CONVERT(varchar(100), CreateTime, 23) as CreateTime from    UserOrder  where OrderState = 2 GROUP by CONVERT(varchar(100), CreateTime, 23)) as t2  on t1.CreateTime=t2.CreateTime
+        (SELECT COUNT(distinct  UserId) as regUserCount, CONVERT(varchar(100), CreateTime, 23) as CreateTime   FROM  UserInfo
         <where>
-            <if test="sqlCondition != null and sqlCondition != ''">
+            <if test="searchTime != null and searchTime != ''">
+                and  CreateTime <include refid="query_time_where"></include>
+            </if>
+        </where>
+        GROUP by CONVERT(varchar(100), CreateTime, 23)) as t  FULL OUTER JOIN
+        (SELECT COUNT(distinct  UserId) as unbetUserCount , COUNT(distinct  OrderId) as unbetOrderCount, CONVERT(varchar(100), CreateTime, 23) as CreateTime from    UserOrder
+        where OrderState = 1
+        <if test="searchTime != null and searchTime != ''">
+            and  CreateTime <include refid="query_time_where"></include>
+        </if>
+        GROUP by CONVERT(varchar(100), CreateTime, 23)) as t1  on t.CreateTime=t1.CreateTime  FULL OUTER JOIN
+        (SELECT COUNT(distinct  UserId) as betUserCount , COUNT(distinct  OrderId) as betOrderCount , CONVERT(varchar(100), CreateTime, 23) as CreateTime from    UserOrder
+        where OrderState = 2
+        <if test="searchTime != null and searchTime != ''">
+            and  CreateTime <include refid="query_time_where"></include>
+        </if>
+        GROUP by CONVERT(varchar(100), CreateTime, 23)) as t2  on t1.CreateTime=t2.CreateTime
+        <where>
+            <if test="sqlCondition != null and sqlCondition != '' and  searchTime == null">
                 <include refid="query_where"></include>
             </if>
         </where>
     </select>
-
 </mapper>

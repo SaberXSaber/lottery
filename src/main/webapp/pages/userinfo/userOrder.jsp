@@ -19,6 +19,8 @@
 
     <link href="css/animate.min.css" rel="stylesheet">
     <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
 
     <style>
         #alertmod_table_list_2 {
@@ -58,9 +60,15 @@
     <script src="js/content.min.js?v=1.0.0"></script>
     <script src="js/plugins/jqgrid/json2.js"></script>
     <script src="js/jDialog/jquery.dialog.js"></script>
+    <script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
+
 
     <script>
         $(document).ready(function(){
+            datePick = function(elem)
+            {
+                jQuery(elem).datepicker({ dateFormat: 'yy-mm-dd' });
+            }
             $.jgrid.defaults.styleUI="Bootstrap";
             $("#table_list_1").jqGrid({
                 url:'/userorderdata.htm',
@@ -83,13 +91,13 @@
                     {name:"tatalNum",index:"tatalNum",editable:true,width:80},
                     {name:"orderState",index:"orderState",editable:false,width:80,formatter: "select",editoptions:{value:"1:待付款;2：已付款;2：已取消"}},
                     {name:"curState",index:"curState",editable:false,width:80,formatter: "select",editoptions:{value:"1:启用;2：禁用"}},
-                    {name:"createTime",index:"createTime",editable:false,width:100,sorttype:"date",formatter:"date",sortable:false},
-                    {name:"updateTime",index:"updateTime",editable:false,width:100,sorttype:"date",formatter:"date",sortable:false},
+                    {name:"createTime",index:"createTime",editable:false,width:100,sorttype:"date",formatter:"date",sortable:false,search:true,stype:'text',searchoptions: {dataInit:datePick ,attr:{title:'选择日期'}}},
+                    {name:"updateTime",index:"updateTime",editable:false,width:100,sorttype:"date",formatter:"date",sortable:false,search:false},
 
                    /* {name:'Modify',index:'id', align:'center',sortable:false,width:30}*/
 
                     {
-                        label: '详情', name: '', index: 'operate', width: 50, align: 'center',
+                        label: '详情', name: '', index: 'operate', width: 50, align: 'center',search:false,
                         /*formatter: function (cellvalue, options, rowObject) {
                             return  "<a  onclick='btn_detail(\""+ rowObject.orderId + "\")'>详细</a>";
 
@@ -191,9 +199,6 @@
             window.open('/userorderdetial?orderId='+id,'详情','height=710,width=940,resizable=no,location=no');
 //            }
         }
-
-
-        $("#table_list_1").jqGrid('navGrid','#pager_list_2');
 
     </script>
     <script type="text/javascript" src="js/stats.js" charset="UTF-8"></script>

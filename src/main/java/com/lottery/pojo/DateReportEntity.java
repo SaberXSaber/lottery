@@ -8,19 +8,19 @@ package com.lottery.pojo;
  * Description：
  */
 public class DateReportEntity {
-    private String dateDay;
+    private String createTime;
     private long regUserCount;
     private long betUserCount;
     private long betOrderCount;
     private long unbetUserCount;
     private long unbetOrderCount;
 
-    public String getDateDay() {
-        return dateDay;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setDateDay(String dateDay) {
-        this.dateDay = dateDay;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     public long getRegUserCount() {

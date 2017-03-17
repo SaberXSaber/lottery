@@ -4,6 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lottery.dao.UserOrderDao">
 
+        <sql id="query_time_where">
+                ${searchTime}
+        </sql>
 
         <sql id="query_where">
               and   ${sqlCondition}
@@ -14,8 +17,11 @@
                 SELECT TOP ${recordEnd} ROW_NUMBER() OVER(ORDER BY uo.OrderId ASC) AS ROWID,uo.* ,u.LoginAccount FROM UserOrder uo
                 LEFT JOIN  UserInfo u ON  uo.UserId =u.UserId
                 WHERE  uo.CurState = 1 AND u.CurState = 1
-                <if test="sqlCondition != null and sqlCondition != ''">
+                <if test="sqlCondition != null and sqlCondition != '' and searchTime == null">
                         <include refid="query_where"></include>
+                </if>
+                <if test="searchTime != null and searchTime != ''">
+                        and  uo.CreateTime <include refid="query_time_where"></include>
                 </if>
                 ) AS TEMP1
                 WHERE ROWID>#{recordStart}
@@ -25,9 +31,12 @@
                 select count(*) from UserOrder uo
                 LEFT JOIN  UserInfo u ON  uo.UserId =u.UserId
                 WHERE  uo.CurState = 1 AND u.CurState = 1
-                        <if test="sqlCondition != null and sqlCondition != ''">
-                                <include refid="query_where"></include>
-                        </if>
+                <if test="sqlCondition != null and sqlCondition != '' and searchTime == null">
+                        <include refid="query_where"></include>
+                </if>
+                <if test="searchTime != null and searchTime != ''">
+                        and  uo.CreateTime <include refid="query_time_where"></include>
+                </if>
         </select>
 
 

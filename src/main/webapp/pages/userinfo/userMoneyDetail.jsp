@@ -19,6 +19,8 @@
 
     <link href="css/animate.min.css" rel="stylesheet">
     <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
 
     <style>
         #alertmod_table_list_2 {
@@ -57,9 +59,15 @@
     <script src="js/plugins/jqgrid/jquery.jqGrid.minffe4.js?0820"></script>
     <script src="js/content.min.js?v=1.0.0"></script>
     <script src="js/plugins/jqgrid/json2.js"></script>
+    <script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
+
 
     <script>
         $(document).ready(function(){
+            datePick = function(elem)
+            {
+                jQuery(elem).datepicker({ dateFormat: 'yy-mm-dd' });
+            }
             $.jgrid.defaults.styleUI="Bootstrap";
             $("#table_list_1").jqGrid({
                 url:'/usermoneydetaildata.htm',
@@ -79,8 +87,8 @@
                     {name:"money",index:"money",editable:true,width:100,formatter:"number",formatoptions: {thousandsSeparator:",", defaulValue:"",decimalPlaces:4}},
                     {name:"remark",index:"remark",editable:true,width:80},
                     {name:"curState",index:"curState",editable:false,width:80,formatter: "select",editoptions:{value:"1:启用;2：禁用"}},
-                    {name:"createTime",index:"createTime",editable:false,width:100,sorttype:"date",formatter:"date",sortable:false},
-                    {name:"updateTime",index:"updateTime",editable:false,width:100,sorttype:"date",formatter:"date",sortable:false}],
+                    {name:"createTime",index:"createTime",editable:false,width:100,sorttype:"date",formatter:"date",sortable:false,search:true,stype:'text',searchoptions: {dataInit:datePick ,attr:{title:'选择日期'}}},
+                    {name:"updateTime",index:"updateTime",editable:false,width:100,sorttype:"date",formatter:"date",sortable:false,search:false}],
                 pager:"#pager_list_1",
                 viewrecords:true,
                 caption:"账户金钱流水明细",
@@ -166,8 +174,6 @@
                         var width=$(".jqGrid_wrapper").width();
                         $("#table_list_1").setGridWidth(width)}
             )});
-
-        $("#table_list_1").jqGrid('navGrid','#pager_list_2');
 
     </script>
     <script type="text/javascript" src="js/stats.js" charset="UTF-8"></script>

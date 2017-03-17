@@ -151,8 +151,6 @@
                         $("#table_list_1").setGridWidth(width)}
             )});
 
-        $("#table_list_1").jqGrid('navGrid','#pager_list_2');
-
     </script>
     <script type="text/javascript" src="js/stats.js" charset="UTF-8"></script>
 </body>

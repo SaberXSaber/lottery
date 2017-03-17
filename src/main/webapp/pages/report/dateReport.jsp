@@ -19,6 +19,8 @@
 
     <link href="css/animate.min.css" rel="stylesheet">
     <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
 
     <style>
         #alertmod_table_list_2 {
@@ -56,8 +58,14 @@
     <script src="js/plugins/jqgrid/i18n/grid.locale-cnffe4.js?0820"></script>
     <script src="js/plugins/jqgrid/jquery.jqGrid.minffe4.js?0820"></script>
     <script src="js/content.min.js?v=1.0.0"></script>
+    <script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
+
     <script>
         $(document).ready(function(){
+            datePick = function(elem)
+            {
+                jQuery(elem).datepicker({ dateFormat: 'yy-mm-dd' });
+            }
             $.jgrid.defaults.styleUI="Bootstrap";
             $("#table_list_1").jqGrid({
                 url:'/datereportdata.htm',
@@ -69,7 +77,7 @@
                 rowList:[10,20,30],
                 colNames:["日期","新注册用户","投注成功用户","投注成功订单","投注未付款用户","投注未付款订单"],
                 colModel:[
-                    {name:"dateDay",index:"dateDay",editable:false,width:100,sorttype:"date",formatter:"date",sortable:false},
+                    {name:"createTime",index:"createTime",editable:false,width:100,sorttype:"date",formatter:"date",sortable:false,search:true,stype:'text',searchoptions: {dataInit:datePick ,attr:{title:'选择日期'}}},
                     {name:"regUserCount",index:"regUserCount",editable:true,width:90},
                     {name:"betUserCount",index:"betUserCount",editable:true,width:90},
                     {name:"betOrderCount",index:"betOrderCount",editable:true,width:90},
@@ -105,8 +113,6 @@
                         var width=$(".jqGrid_wrapper").width();
                         $("#table_list_1").setGridWidth(width)}
             )});
-
-        $("#table_list_1").jqGrid('navGrid','#pager_list_2');
 
     </script>
     <script type="text/javascript" src="js/stats.js" charset="UTF-8"></script>

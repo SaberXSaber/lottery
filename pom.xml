@@ -7,6 +7,20 @@
     <version>1.0-SNAPSHOT</version>
     <name>lotteryweb</name>
 
+    <repositories>
+        <repository>
+            <id>nexus-aliyun</id>
+            <name>Nexus aliyun</name>
+            <layout>default</layout>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+        </repository>
+        <repository>
+            <id>cen</id>
+            <name> cen Repository</name>
+            <url>http://central.maven.org/maven2/</url>
+        </repository>
+    </repositories>
+
     <properties>
         <spring.version>4.2.3.RELEASE</spring.version>
     </properties>
@@ -193,6 +207,7 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.5</version>
         </dependency>
+
 
 
         <dependency>
