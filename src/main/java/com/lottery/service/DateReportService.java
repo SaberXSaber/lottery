@@ -1,5 +1,10 @@
 package com.lottery.service;
 
+import com.lottery.condition.PageCondition;
+import com.lottery.pojo.DateReportEntity;
+
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * User: guoshubo
@@ -8,4 +13,6 @@ package com.lottery.service;
  * Description：
  */
 public interface DateReportService {
+    List<DateReportEntity> getByPage(PageCondition pageCondition);
+    int getTotal(PageCondition pageCondition);
 }

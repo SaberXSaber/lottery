@@ -9,9 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>H+ 后台主题UI框架 - jqGird</title>
-    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
-    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+    <title>lottery管理后台 - 后台用户管理</title>
 
     <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
     <link href="css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
@@ -21,6 +19,8 @@
 
     <link href="css/animate.min.css" rel="stylesheet">
     <link href="css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <link href="css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
 
     <style>
         #alertmod_table_list_2 {
@@ -59,6 +59,8 @@
     <script src="js/plugins/jqgrid/jquery.jqGrid.minffe4.js?0820"></script>
     <script src="js/content.min.js?v=1.0.0"></script>
     <script src="js/plugins/jqgrid/json2.js"></script>
+    <script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
+
 
     <script>
         function Delete(id,curState) { //单击删除链接的操作
@@ -79,6 +81,10 @@
         }
 
         $(document).ready(function(){
+            datePick = function(elem)
+            {
+                jQuery(elem).datepicker({ dateFormat: 'yy-mm-dd' });
+            }
             $.jgrid.defaults.styleUI="Bootstrap";
             $("#table_list_1").jqGrid({
                 url:'/userdata.htm',
@@ -96,8 +102,8 @@
 //                    {name:"roleName",index:"roleName",editable:true,width:90,edittype:"select",editoptions:{value:gettypes()}},/*dataUrl:"http://localhost:8080/roles.htm"*/
                     {name:"roleId",index:"roleId",editable:true,width:90,formatter: "select",edittype:"select",editoptions:{value:gettypes()}},
                     {name:"curState",index:"curState",editable:false,width:80,formatter: "select",editoptions:{value:"1:启用;0:禁用"}},
-                    {name:"createTime",index:"createTime",editable:false,width:100,sorttype:"date",formatter:"date",sortable:false},
-                    {name:'Delete',index:'userId',width:80,align:'center',sortable:false}
+                    {name:"createTime",index:"createTime",editable:false,width:100,sorttype:"date",formatter:"date",sortable:false,search:true,stype:'text',searchoptions: {dataInit:datePick ,attr:{title:'选择日期'}}},
+                    {name:'Delete',index:'userId',width:80,align:'center',sortable:false,search:false}
                 ],
                 pager:"#pager_list_1",
                 viewrecords:true,

@@ -9,9 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-    <title>H+ 后台主题UI框架 - jqGird</title>
-    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
-    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
+    <title>lottery管理后台 - 用户金钱明细</title>
 
     <link rel="shortcut icon" href="favicon.ico"> <link href="css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
     <link href="css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
@@ -102,16 +100,6 @@
                         closeOnEscape: true,//Closes the popup on pressing escape key
                         reloadAfterSubmit: true,
                         drag: true,
-                       /* afterSubmit: function (response, postdata) {
-                            if (response.responseText == "") {
-                                $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid');//Reloads the grid after edit
-                                return [true, response.responseText]
-                            }
-                            else {
-                                $(this).jqGrid('setGridParam', { datatype: 'json' }).trigger('reloadGrid'); //Reloads the grid after edit
-                                return [false, response.responseText]//Captures and displays the response text on th Edit window
-                            }
-                        },*/
                         editData: {
                             userId: function () {
                                 var sel_id = $('#table_list_1').jqGrid('getGridParam', 'selrow');
@@ -153,29 +141,6 @@
 
                     }
             );
-            /*function gettypes(){
-                var str="";
-                $.ajax({
-                    type:"post",
-                    async:false,
-                    url:"roles.htm",
-                    success:function(data){
-                        if (data != null) {
-                            console.info(data);
-                            var obj=   JSON.parse(data)
-                            for(var i=0; i<obj.length; i++) {
-                                if(i!=obj.length-1){
-                                    str+=obj[i].roleId+":"+obj[i].roleName+";";
-                                }else{
-                                    str+=obj[i].roleId+":"+obj[i].roleName;// 这里是option里面的 value:label
-                                }
-                            }
-                        }
-                    }
-                });
-                return str;
-            }*/
-
 
             /*jQuery("#table_list_1").jqGrid('navButtonAdd','#pager_list_1',{
                 caption: "",

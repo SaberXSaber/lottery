@@ -4,16 +4,13 @@
 <html>
 
 
-<!-- Mirrored from www.zi-han.net/theme/hplus/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:16:41 GMT -->
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="renderer" content="webkit">
   <meta http-equiv="Cache-Control" content="no-siteapp" />
-  <title>H+ 后台主题UI框架 - 主页</title>
+  <title>lotter-后台管理</title>
 
-  <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
-  <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
 
   <!--[if lt IE 9]>
   <meta http-equiv="refresh" content="0;ie.html" />
@@ -43,9 +40,9 @@
                                 <span class="text-muted text-xs block">超级管理员<b class="caret"></b></span>
                                 </span>
             </a>
-            <ul class="dropdown-menu animated fadeInRight m-t-xs">
-             <%-- <li><a class="J_menuItem" href="form_avatar.html">修改头像</a>
-              </li>--%>
+            <%--<ul class="dropdown-menu animated fadeInRight m-t-xs">
+             &lt;%&ndash; <li><a class="J_menuItem" href="form_avatar.html">修改头像</a>
+              </li>&ndash;%&gt;
               <li><a class="J_menuItem" href="profile.html">个人资料</a>
               </li>
               <li><a class="J_menuItem" href="contacts.html">联系我们</a>
@@ -55,10 +52,47 @@
               <li class="divider"></li>
               <li><a href="login.html">安全退出</a>
               </li>
-            </ul>
+            </ul>--%>
           </div>
-          <div class="logo-element">H+
+          <div class="logo-element">lottery
           </div>
+        </li>
+
+        <li>
+          <a href="#">
+            <i class="fa fa-home"></i>
+            <span class="nav-label">用户管理</span>
+            <span class="fa arrow"></span>
+          </a>
+          <ul class="nav nav-second-level">
+            <li>
+              <a class="J_menuItem" href="/userinfolist">用户管理</a>
+            </li>
+            <li>
+              <a class="J_menuItem" href="/userorderlist">历史投注记录</a>
+            </li>
+            <li>
+              <a class="J_menuItem" href="/usermoneydetaillist">账户金钱流水明细</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">
+            <i class="fa fa-home"></i>
+            <span class="nav-label">报表</span>
+            <span class="fa arrow"></span>
+          </a>
+          <ul class="nav nav-second-level">
+            <li>
+              <a class="J_menuItem" href="/datereportlist">日期报表</a>
+            </li>
+            <%--<li>
+              <a class="J_menuItem" href="/userorderlist">历史投注记录</a>
+            </li>
+            <li>
+              <a class="J_menuItem" href="/usermoneydetaillist">账户金钱流水明细</a>
+            </li>--%>
+          </ul>
         </li>
         <li>
           <a href="#">
@@ -79,34 +113,16 @@
             <li>
               <a class="J_menuItem" href="/rolePagelist">权限管理</a>
             </li>
-           <%-- <li>
-              <a class="J_menuItem" href="http://localhost:8080/index6">主页示例五</a>
-            </li>--%>
-          <%--  <li>
-              <a href="index_v5.html" target="_blank">主页示例五</a>
-            </li>--%>
+            <%-- <li>
+               <a class="J_menuItem" href="http://localhost:8080/index6">主页示例五</a>
+             </li>--%>
+            <%--  <li>
+                <a href="index_v5.html" target="_blank">主页示例五</a>
+              </li>--%>
           </ul>
 
         </li>
-        <li>
-          <a href="#">
-            <i class="fa fa-home"></i>
-            <span class="nav-label">用户管理</span>
-            <span class="fa arrow"></span>
-          </a>
-          <ul class="nav nav-second-level">
-            <li>
-              <a class="J_menuItem" href="/userinfolist" data-index="0">用户管理</a>
-            </li>
-            <li>
-              <a class="J_menuItem" href="/userorderlist">历史投注记录</a>
-            </li>
-            <li>
-              <a class="J_menuItem" href="/usermoneydetaillist">账户金钱流水明细</a>
-            </li>
-          </ul>
-        </li>
-        <li>
+        <%--<li>
           <a href="#">
             <i class="fa fa fa-bar-chart-o"></i>
             <span class="nav-label">统计图表</span>
@@ -135,11 +151,11 @@
               <a class="J_menuItem" href="graph_metrics.html">图表组合</a>
             </li>
           </ul>
-        </li>
+        </li>--%>
 
 
 
-        <li>
+        <%--<li>
           <a href="#"><i class="fa fa-desktop"></i> <span class="nav-label">页面</span><span class="fa arrow"></span></a>
           <ul class="nav nav-second-level">
             <li><a class="J_menuItem" href="contacts.html">联系人</a>
@@ -168,7 +184,7 @@
             <li><a class="J_menuItem" href="empty_page.html">空白页</a>
             </li>
           </ul>
-        </li>
+        </li>--%>
 
 
       </ul>
@@ -300,7 +316,7 @@
       <a href="logout.htm" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
     </div>
     <div class="row J_mainContent" id="content-main">
-      <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="index_v148b2.html?v=4.0" frameborder="0" data-id="index_v1.html" seamless></iframe>
+      <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="/datereportlist" frameborder="0" data-id="index_v1.html" seamless></iframe>
     </div>
     <%--<div class="footer">
       <div class="pull-right">&copy; 2014-2015 <a href="http://www.zi-han.net/" target="_blank">zihan's blog</a>

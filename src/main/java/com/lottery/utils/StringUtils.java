@@ -1,6 +1,6 @@
 package com.lottery.utils;
 
-import jdk.nashorn.internal.runtime.regexp.joni.Regex;
+//import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import org.apache.commons.lang3.*;
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -20,7 +20,7 @@ public class StringUtils {
     private static final int PAD_LIMIT = 8192;
 
 
-    public static void main(String[] args) {
+   /* public static void main(String[] args) {
         String s = "hello";
         String a = "el";
         Regex re = new Regex(a);
@@ -41,7 +41,7 @@ public class StringUtils {
         while(m.find()){
             System.out.println(m.start()+"________"+m.end());
         }
-    }
+    }*/
 
 
 

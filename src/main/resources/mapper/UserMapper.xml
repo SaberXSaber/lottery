@@ -9,28 +9,37 @@
               and   ${sqlCondition}
         </sql>
 
+        <sql id="query_time_where">
+                   ${searchTime}
+        </sql>
+
         <select id="getUserByPage" parameterType="com.lottery.condition.PageCondition" resultType="com.lottery.pojo.UsersEntity">
                 SELECT * FROM(
                 SELECT TOP ${recordEnd} ROW_NUMBER() OVER(ORDER BY u.UserId ASC) AS ROWID,u.*,r.RoleName  FROM Users u
                 LEFT JOIN Role r ON u.RoleId = r.RoleId
                 <where>
-                <if test="sqlCondition != null and sqlCondition != ''">
-                        <include refid="query_where"></include>
-                </if>
+                        <if test="sqlCondition != null and sqlCondition != '' and searchTime == null">
+                                <include refid="query_where"></include>
+                        </if>
+                        <if test="searchTime != null and searchTime != ''">
+                                and  u.CreateTime <include refid="query_time_where"></include>
+                        </if>
                 </where>
                 ) AS TEMP1
                 WHERE ROWID>#{recordStart}
         </select>
 
-        <select id="getTotal" resultType="java.lang.Integer">
+        <select id="getTotal" parameterType="com.lottery.condition.PageCondition" resultType="java.lang.Integer">
                 select count(1) from Users u
                 LEFT JOIN Role r ON u.RoleId = r.RoleId
                 <where>
-                <if test="sqlCondition != null and sqlCondition != ''">
+                        <if test="sqlCondition != null and sqlCondition != '' and searchTime == null">
                                 <include refid="query_where"></include>
                         </if>
+                        <if test="searchTime != null and searchTime != ''">
+                                and  u.CreateTime <include refid="query_time_where"></include>
+                        </if>
                 </where>
-
         </select>
 
         <select id="getUserByNamepwd" parameterType="java.util.Map" resultType="com.lottery.pojo.UsersEntity">

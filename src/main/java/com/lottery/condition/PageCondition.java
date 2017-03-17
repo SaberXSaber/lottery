@@ -2,6 +2,11 @@ package com.lottery.condition;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * Created by IntelliJ IDEA.
  * User: guoshubo
@@ -17,6 +22,8 @@ public class PageCondition {
     private int recordStart =0;
     private int recordEnd = 10;
     private int total = -1; //页码记录
+    private String  searchTime;
+
 
     private String sord; //排序
     private String sidx;
@@ -161,6 +168,72 @@ public class PageCondition {
             result = searchField+" like '%"+searchString+"%'";
         }
         return result;
+    }
+
+    public String getSearchTime() {
+        String result = null;
+        if(StringUtils.isNotBlank(this.getSearchOper())){
+            if(this.getSearchField().contains("createTime")){
+                if("eq".equals(searchOper) || "eq" == searchOper){
+                    return  "BETWEEN '"+ earliestTime(searchString)+"' AND '"+latestTime(searchString)+"'";
+                }else if("ne".equals(searchOper) || "ne" == searchOper){
+                    return  "NOT BETWEEN '"+  earliestTime(searchString)+"' AND '"+latestTime(searchString)+"'";
+                }else if("lt".equals(searchOper) || "lt" == searchOper){
+                    result = "< '"+searchString+"'";
+                }else if("le".equals(searchOper) || "le" == searchOper){
+                    result ="<= '"+searchString+"'";
+                }else if("gt".equals(searchOper) || "gt" == searchOper){
+                    result ="> '"+searchString+"'";
+                }else if("ge".equals(searchOper) || "ge" == searchOper){
+                    result = ">= '"+searchString+"'";
+                }
+            }
+        }
+        return result;
+
+    }
+
+    public void setSearchTime(String searchTime) {
+        this.searchTime = searchTime;
+    }
+
+    public static String earliestTime(String time){
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");//小写的mm表示的是分钟
+        SimpleDateFormat sdf1 =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date= null;
+        try {
+            date = sdf.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.set(Calendar.HOUR_OF_DAY,0);
+        c.set(Calendar.MINUTE,0);
+        c.set(Calendar.SECOND,0);
+
+        return  sdf1.format(c.getTime());
+    }
+
+    /**
+     *
+     * @return
+     */
+    public static  String latestTime(String time){
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");//小写的mm表示的是分钟
+        SimpleDateFormat sdf1 =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date= null;
+        try {
+            date = sdf.parse(time);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.set(Calendar.HOUR_OF_DAY,23);
+        c.set(Calendar.MINUTE,59);
+        c.set(Calendar.SECOND,59);
+        return  sdf1.format(c.getTime());
     }
 
 }
