@@ -76,8 +76,9 @@ public class LotteryMainController {
             lotteryTypeEntity.setParentId(1);
         }
         if(ConstantParm.OPER_ADD.equals(oper)){
-//            result=lotteryTypeService.addLy(lotteryTypeEntity)>0;
+           result=lotteryTypeService.addLy(lotteryTypeEntity)>0;
         }else if(ConstantParm.OPER_EDIT.equals(oper)){
+            result=lotteryTypeService.editLy(lotteryTypeEntity)>0;
         }else if(ConstantParm.OPER_DEL.equals(oper)){
         }else {
             result =true;

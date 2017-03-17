@@ -19,6 +19,142 @@
         WHERE ROWID>#{recordStart}
     </select>
 
+    <select id="getOrderDetailListByPage" parameterType="com.lottery.condition.PageCondition"
+            resultType="com.lottery.pojo.OrderDetailEntity">
+        SELECT * FROM(
+        SELECT TOP ${recordEnd} ROW_NUMBER() OVER(ORDER BY t.${sidx} ${sord}) AS ROWID,t.* FROM (
+        SELECT a.[OrderDetailId]
+        ,a.[Currentdate]
+        ,a.[OrderId]
+        ,a.[CartId]
+        ,a.[UserId]
+        ,a.[LotteryTypeId]
+        ,a.[DetailType]
+        ,a.[LotteryDateNum]
+        ,a.[LotteryString]
+        ,a.[CostMoney]
+        ,a.[OrderDetailState]
+        ,a.[LotteryLevel]
+        ,a.[CurState]
+        ,a.[UpdateTime]
+        ,a.[CreateTime]
+        ,b.OrderMoney
+        ,b.DoubleNum
+        ,b.OrderType
+        ,b.MoreNum
+        ,b.TatalNum
+        ,b.OrderState
+        FROM [ABCLottery].[dbo].[UserOrderDetail] a
+        left join [ABCLottery].[dbo].[UserOrder] b on a.OrderId = b.OrderId      ) t
+        where 1=1
+        <if test="sqlCondition != null and sqlCondition != ''">
+            <include refid="query_where"></include>
+        </if>
+        ) AS TEMP1
+        WHERE ROWID>#{recordStart}
+    </select>
+
+    <select id="getOrderDetailTotal" resultType="java.lang.Integer">
+        select count(1) from (
+        SELECT a.[OrderDetailId]
+        ,a.[Currentdate]
+        ,a.[OrderId]
+        ,a.[CartId]
+        ,a.[UserId]
+        ,a.[LotteryTypeId]
+        ,a.[DetailType]
+        ,a.[LotteryDateNum]
+        ,a.[LotteryString]
+        ,a.[CostMoney]
+        ,a.[OrderDetailState]
+        ,a.[LotteryLevel]
+        ,a.[CurState]
+        ,a.[UpdateTime]
+        ,a.[CreateTime]
+        ,b.OrderMoney
+        ,b.DoubleNum
+        ,b.OrderType
+        ,b.MoreNum
+        ,b.TatalNum
+        ,b.OrderState
+        FROM [ABCLottery].[dbo].[UserOrderDetail] a
+        left join [ABCLottery].[dbo].[UserOrder] b on a.OrderId = b.OrderId
+
+        ) t
+        where 1=1
+        <if test="sqlCondition != null and sqlCondition != ''">
+            <include refid="query_where"></include>
+        </if>
+    </select>
+
+    <select id="getNoticeListByPage" parameterType="com.lottery.condition.PageCondition"
+            resultType="com.lottery.pojo.NoticeListEntity">
+        SELECT * FROM(
+        SELECT TOP ${recordEnd} ROW_NUMBER() OVER(ORDER BY t.${sidx} ${sord}) AS ROWID,t.* FROM (
+
+        SELECT
+        b.TypeName
+        ,b.LogoUrl
+        ,b.ParentId
+        ,a.ItemId
+        ,a.LotteryType
+        ,a.LotterySeq
+        ,a.LotteryDate
+        ,a.LotteryString
+        ,a.LotteryStringTry
+        ,a.LotteryMoney
+        ,a.Lottery1Num
+        ,a.Lottery1NumString
+        ,a.Lottery2Num
+        ,a.Lottery2NumString
+        ,a.Lottery3Num
+        ,a.Lottery3NumString
+        ,a.CurState
+        ,a.UpdateTime
+        ,a.CreateTime
+        FROM [ABCLottery].[dbo].[LotteryHistory] a
+        left join [ABCLottery].[dbo].[LotteryType] b on a.LotteryType = b.TypeId
+        ) t
+        where 1=1
+        <if test="sqlCondition != null and sqlCondition != ''">
+            <include refid="query_where"></include>
+        </if>
+        ) AS TEMP1
+        WHERE ROWID>#{recordStart}
+    </select>
+
+    <select id="getNoticeTotal" resultType="java.lang.Integer">
+        select count(1) from (
+
+        SELECT
+        b.TypeName
+        ,b.LogoUrl
+        ,b.ParentId
+        ,a.ItemId
+        ,a.LotteryType
+        ,a.LotterySeq
+        ,a.LotteryDate
+        ,a.LotteryString
+        ,a.LotteryStringTry
+        ,a.LotteryMoney
+        ,a.Lottery1Num
+        ,a.Lottery1NumString
+        ,a.Lottery2Num
+        ,a.Lottery2NumString
+        ,a.Lottery3Num
+        ,a.Lottery3NumString
+        ,a.CurState
+        ,a.UpdateTime
+        ,a.CreateTime
+        FROM [ABCLottery].[dbo].[LotteryHistory] a
+        left join [ABCLottery].[dbo].[LotteryType] b on a.LotteryType = b.TypeId
+        ) t
+        where 1=1
+        <if test="sqlCondition != null and sqlCondition != ''">
+            <include refid="query_where"></include>
+        </if>
+    </select>
+
     <insert id="addLy" parameterType="com.lottery.pojo.LotteryTypeEntity">
         INSERT INTO [dbo].[LotteryType]
         ([SeqNum]
@@ -43,7 +179,6 @@
         ,getdate()
         ,getdate())
     </insert>
-
 
     <insert id="editLy" parameterType="com.lottery.pojo.LotteryTypeEntity">
         UPDATE [dbo].[LotteryType]

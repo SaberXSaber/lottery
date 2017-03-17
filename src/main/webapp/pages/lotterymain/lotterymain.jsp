@@ -86,16 +86,15 @@
          shrinkToFit:true,
          rowNum:10,
          rowList:[10,20,30],
-         colNames:["彩票ID","排序","彩票名称","宣传语","所属彩种","Logo","","单价","当前状态"],
+         colNames:["彩票ID","排序","彩票名称","宣传语","所属彩种","Logo","单价","当前状态"],
          colModel:[
              {name:"typeId",index:"typeId",editable:false,width:60,sorttype:"int",search:true}
              ,{name:"seqNum",index:"seqNum",editable:true,hidedlg:true}
              ,{name:"typeName",index:"typeName",editable:true}
              ,{name:"tips",index:"tips",editable:true}
-             ,{name:"parentName",index:"parentName",editable:true}
+             ,{name:"parentName",index:"parentName",editable:true, edittype : "select",   editoptions:{value:"高频彩种:高频彩种;体育彩票:体育彩票;福利彩票:福利彩票"}}
              ,{name:"logoUrl",index:"logoUrl",editable:true,edittype:'custom', editoptions:{custom_element: myelem, custom_value:myvalue},formatter:function(cellvalue, options, row){
                      return "<img src=\""+cellvalue+"\" width='50' height='50'/>";}}
-             ,{name:"logoUrl",index:"logoUrl",editable:true,edittype:'custom', editoptions:{custom_element: myelem, custom_value:myvalue}}
              ,{name:"price",index:"price",editable:true}
              ,{name:"curState",index:"curState",editable:true, edittype : "select",   editoptions:{value:"1:待销售;0:未发布;2:销售中"}
                  ,formatter:function(cellvalue, options, row){
@@ -121,7 +120,7 @@
          $("#table_list_1").jqGrid(
          "navGrid",
          "#pager_list_1",
-         {edit:true,add:true,del:true,search:true},
+         {edit:true,add:true,search:true},
          {
          closeOnEscape: true,
          reloadAfterSubmit: true,
