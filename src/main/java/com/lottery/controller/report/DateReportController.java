@@ -1,4 +1,4 @@
-package com.lottery.controller;
+package com.lottery.controller.report;
 
 import com.lottery.condition.PageCondition;
 import com.lottery.pojo.DateReportEntity;

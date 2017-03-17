@@ -1,6 +1,7 @@
-package com.lottery.controller;
+package com.lottery.controller.user;
 
 import com.lottery.condition.PageCondition;
+import com.lottery.controller.BaseController;
 import com.lottery.dao.UserMoneyDetailDao;
 import com.lottery.pojo.UserMoneyDetailEntity;
 import com.lottery.service.UserMoneyDetailService;
@@ -24,7 +25,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/")
-public class UserMoneyDetailController extends BaseController{
+public class UserMoneyDetailController extends BaseController {
     @Resource
     private UserMoneyDetailService userMoneyDetailService;
 

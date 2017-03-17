@@ -1,8 +1,9 @@
-package com.lottery.controller;
+package com.lottery.controller.system;
 
 
 import com.alibaba.fastjson.JSONObject;
 import com.lottery.condition.PageCondition;
+import com.lottery.controller.BaseController;
 import com.lottery.pojo.UsersEntity;
 import com.lottery.service.RoleService;
 import com.lottery.service.UserService;

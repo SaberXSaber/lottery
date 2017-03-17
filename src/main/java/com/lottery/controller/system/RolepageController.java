@@ -1,7 +1,8 @@
-package com.lottery.controller;
+package com.lottery.controller.system;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lottery.condition.PageCondition;
+import com.lottery.controller.BaseController;
 import com.lottery.pojo.RolePageEntity;
 import com.lottery.service.PageService;
 import com.lottery.service.RolePageService;
@@ -29,7 +30,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/")
-public class RolepageController extends BaseController{
+public class RolepageController extends BaseController {
     @Autowired
     private RolePageService rolePageService;
     @Autowired

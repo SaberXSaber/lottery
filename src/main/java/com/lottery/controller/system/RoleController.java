@@ -1,9 +1,11 @@
-package com.lottery.controller;
+package com.lottery.controller.system;
 
 import com.alibaba.fastjson.JSONObject;
 import com.lottery.condition.PageCondition;
-import com.lottery.pojo.PageEntity;
-import com.lottery.service.PageService;
+import com.lottery.controller.BaseController;
+import com.lottery.pojo.OperationLog;
+import com.lottery.pojo.RoleEntity;
+import com.lottery.service.RoleService;
 import com.lottery.utils.ConstantParm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,45 +27,45 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/")
-public class PageController extends BaseController{
+public class RoleController extends BaseController {
 
     @Autowired
-    private PageService pageService;
+    private RoleService roleService;
 
 
-    @RequestMapping(value="/pagelist",method = RequestMethod.GET)
-    public String pagelist(ModelMap model){
+    @RequestMapping(value="/rolelist",method = RequestMethod.GET)
+    public String rolelist(ModelMap model){
         if(!hasRight()){
             return "403";
         }
-        return "users/page";
+        return "users/role";
     }
 
 
-    @RequestMapping(value = "/pagedata")
+    @RequestMapping(value = "/roledata")
     @ResponseBody
     public Map list(PageCondition pageCondition){
         Map reslut = new HashMap();
-        List<PageEntity> listPages =pageService.getPageByPage(pageCondition);
-        int recordTotal = pageService.getTotal(pageCondition);
+        List<RoleEntity> listRoles =roleService.getRoleByPage(pageCondition);
+        int recordTotal = roleService.getTotal(pageCondition);
         pageCondition.setRecordTotal(recordTotal);
         reslut.put("total", pageCondition.getTotal());
-        reslut.put("rows", listPages);
+        reslut.put("rows", listRoles);
         return reslut;
     }
 
-    @RequestMapping(value="/pageedit")
+    @RequestMapping(value="/roleedit")
     @ResponseBody
-    public String edit( PageEntity pageEntity,String oper){
+    public String edit( RoleEntity roleEntity,String oper){
         boolean result= false;
         if(ConstantParm.OPER_ADD.equals(oper)){
-            result=pageService.addPage(pageEntity);
+            result=roleService.addRole(roleEntity);
         }else if(ConstantParm.OPER_EDIT.equals(oper)){
-            result=pageService.updatePage(pageEntity);
+            result=roleService.updateRole(roleEntity);
         }else if(ConstantParm.OPER_DEL.equals(oper)){
-            result=pageService.deletePage(pageEntity);
+            result=roleService.deleteRole(roleEntity);
         }else {
-            result =true;
+            result=true;
         }
 
         JSONObject res = new JSONObject();
@@ -80,10 +82,10 @@ public class PageController extends BaseController{
         return res.toString();
     }
 
-    @RequestMapping(value="/pages")
+    @RequestMapping(value="/roles")
     @ResponseBody
-    public List<PageEntity> roleList(){
-        List<PageEntity> pageList=  pageService.pageList();
-        return pageList;
+    public List<RoleEntity> roleList(){
+        List<RoleEntity> roleList=  roleService.roleList();
+        return roleList;
     }
 }
